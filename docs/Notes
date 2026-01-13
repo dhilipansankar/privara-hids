@@ -1,0 +1,118 @@
+
+### 1.1 Database Design Philosophy
+The SQLite schema is designed for:
+- **Efficiency**: Normalized structure with proper indexing for fast queries
+- **Security**: No PII in plaintext, all sensitive fields encrypted or hashed
+- **Compliance**: GDPR and HIPAA audit trails with retention policies
+- **Performance**: Connection pooling, query optimization, and archival strategy
+
+
+2.3 Security Hardening Checklist
+
+
+        Use cryptographically secure random number generator (os.urandom)
+        Generate keys only once per profile
+        Store public keys in database
+        Store secret keys in OS keyring or HSM (NOT database)
+ 
+    
+    Hybrid Encryption: 
+         Use ML-KEM for key agreement (post-quantum)
+         Derive symmetric key from KEM shared secret
+        Use AES-256-GCM for symmetric encryption (authenticated)
+         Use 96-bit IV (nonce) for GCM mode
+    
+    
+    Digital Signatures
+         Use ML-DSA-87 for all integrity-critical operations
+         Sign bug reports before submission
+         Verify signatures on received updates
+         Include timestamp in signed messages (prevent replay)
+    
+    
+    Key Rotation
+         Rotate keys every 90 days
+         Archive old keys with rotation timestamp
+         Re-encrypt old encrypted data with new key
+         Alert user of pending key rotation
+    
+    
+    Post-Quantum Readiness
+        Implement CRYSTALS-Kyber + CRYSTALS-Dilithium
+         Maintain SLH-DSA as backup (stateless)
+         Document migration from RSA/ECC (if applicable)
+         Plan hybrid classical+PQC deployment
+  
+
+## 3. JAVAFX APPLICATION ARCHITECTURE
+
+privara-hids/
+├── src/
+│   ├── main/java/com/privara/
+│   │   ├── Privara.java                    # Entry point
+│   │   ├── controller/
+│   │   │   ├── DashboardController.java
+│   │   │   ├── TaskManagerController.java
+│   │   │   ├── LogAnalysisController.java
+│   │   │   ├── BugReportController.java
+│   │   │   └── SettingsController.java
+│   │   ├── model/
+│   │   │   ├── SecurityLog.java
+│   │   │   ├── ThreatAlert.java
+│   │   │   ├── Process.java
+│   │   │   └── BugReport.java
+│   │   ├── service/
+│   │   │   ├── LoggingService.java         # SQLite operations
+│   │   │   ├── PQCService.java             # NIST PQC
+│   │   │   ├── BugReportService.java       # GitHub/Email
+│   │   │   └── LogAnalyzerService.java     # Pattern detection
+│   │   ├── ui/
+│   │   │   ├── TechNoirTheme.java
+│   │   │   └── components/
+│   │   │       ├── DijkstraGraph.java
+│   │   │       └── LogViewer.java
+│   │   └── util/
+│   │       ├── DatabaseManager.java
+│   │       └── SecurityUtils.java
+│   └── resources/
+│       ├── fxml/
+│       │   ├── main.fxml
+│       │   ├── dashboard.fxml
+│       │   ├── bug-report.fxml
+│       │   └── log-analysis.fxml
+│       └── css/
+│           ├── tech-noir.css
+│           ├── blade-runner.css
+│           └── enemy.css
+├── pom.xml
+└── README.md
+```
+
+
+## 5. DEPLOYMENT CHECKLIST
+
+### Installation Prerequisites
+- [ ] Java 21+ (OpenJDK or Oracle)
+- [ ] SQLite3 (included with app)
+- [ ] liboqs library (pip install liboqs)
+- [ ] PyCryptodome (pip install pycryptodome)
+- [ ] Python 3.10+ (for backend services)
+- [ ] Administrator privileges on Windows
+
+### Configuration Steps
+1. Clone repository: `git clone [REPO_LINK]`
+2. Install dependencies: `mvn install`
+3. Configure GitHub token: `export GITHUB_TOKEN=...`
+4. Build: `mvn clean package`
+5. Create .exe: `nsis Privara.nsi`
+6. Sign executable: `signtool sign /f cert.pfx Privara-Setup.exe`
+7. Distribute and verify digital signature
+
+---
+
+## REFERENCES
+
+- NIST PQC Standards: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf
+- liboqs Documentation: https://liboqs.org/
+- SQLite Security: https://sqlite.org/security.html
+- JavaFX Best Practices: https://openjfx.io/
