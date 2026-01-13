@@ -1,0 +1,472 @@
+
+Privara Enterprise HIDS operates under GDPR Article 5 principles:
+
+1. **Lawfulness, Fairness, and Transparency**
+   - Clear Privacy Policy presented on first launch
+   - Explicit consent required for monitoring activation
+   - Users can review what data is being collected in real-time
+
+2. **Purpose Limitation**
+   - Data collected only for security monitoring purposes
+   - No secondary use of personal data
+   - No data sharing with third parties
+   - All processing stays local on user's machine
+
+3. **Data Minimization**
+   - Collect only necessary process and network metadata
+   - File content not examined (only file metadata and hashes)
+   - No keyboard logging or screen recording
+   - Minimal registry monitoring (only security-relevant keys)
+
+4. **Accuracy and Integrity**
+   - Regular data validation checks
+   - Automatic correction of outdated threat information
+   - Version control for configuration files
+
+5. **Storage Limitation**
+   - Threat logs: 90 days retention
+   - Process history: 30 days retention
+   - Configuration: Until user deletion
+   - Automatic purging after retention periods
+   - Manual override available via "Right to be Forgotten"
+
+6. **Integrity and Confidentiality**
+   - AES-256 encryption for sensitive configuration
+   - Local storage only (no cloud sync)
+   - No external API calls or telemetry
+   - Hash verification for critical files
+
+### User Rights Implementation
+
+**Article 15 - Right of Access**
+- Menu option: "Export All My Data"
+- Generates JSON file with all user-created data within 30 days
+- Includes: Configuration, whitelist/blacklist, alerts, scan history
+
+**Article 16 - Right to Rectification**
+- Settings allow direct modification of monitored rules
+- Users can correct process classifications
+- Manual override system for detected threats
+
+**Article 17 - Right to Erasure (Right to be Forgotten)**
+- One-click "Delete All Personal Data" button
+- 24-hour reversal window (data stored in recovery partition)
+- Automatic purge after 24 hours
+- Legally required security logs preserved
+- Confirmation email-style notification with reversal PIN
+
+**Article 20 - Right to Data Portability**
+- "Export Configuration" feature exports all settings as portable JSON
+- Import to other Privara installations
+- No proprietary file formats
+
+**Article 21 - Right to Object**
+- Per-component monitoring disable options
+- Users can disable specific HIDS modules
+- Save configuration as profile for later reactivation
+
+### Compliance Certifications
+
+**GDPR Compliance Checklist**
+- ☑ Privacy Policy: Embedded in application, no external links
+- ☑ Data Protection Impact Assessment (DPIA): Reference documentation included
+- ☑ Data Processing Agreement template available
+- ☑ Legitimate Interest Assessment available
+- ☑ Data breach notification: Provided if vulnerabilities detected
+- ☑ Privacy by Design: No telemetry, local processing only
+- ☑ Data retention schedules: Clear time limits for all data types
+- ☑ Consent mechanism: Explicit opt-in for monitoring modules
+- ☑ User rights implementation: All Articles 15-22 supported
+
+**Other Compliance Standards**
+- CCPA (California Consumer Privacy Act): Supported
+- LGPD (Brazilian Data Protection Law): Supported
+- HIPAA-compatible (secure local processing)
+- ISO 27001-aligned security practices
+
+---
+
+## PACKAGING AS .EXE WITH INSTALLATION WIZARD
+
+### Prerequisites for .exe Creation
+The following tools and frameworks are recommended:
+
+1. **Electron Packaging** (NOT RECOMMENDED for security app)
+   - Too heavyweight for system utility
+   - Large download size (150-300MB)
+   - High memory footprint
+
+2. **NW.js** (Better alternative)
+   - Smaller footprint than Electron (80-150MB)
+   - Better performance for system monitoring
+   - Security features: Content Security Policy, Sandboxing
+
+3. **NSIS (Nullsoft Scriptable Install System)** (RECOMMENDED)
+   - Creates professional .exe installer
+   - Small download (50-100MB for bundled app)
+   - Support for .NET runtime integration
+   - Custom license page with GDPR terms
+   - Multi-language installer support
+   - Post-installation tasks (service setup, firewall rules)
+
+4. **Advanced Installer** (ENTERPRISE OPTION)
+   - Full GDPR compliance wizard
+   - Digital signing
+   - Automatic updates
+   - System restore point creation
+
+### Installation Wizard Flow (NSIS/Advanced Installer)
+
+```
+Step 1: Welcome Screen
+├─ Show Privara logo with techno-punk aesthetic
+├─ Highlight key features
+└─ "Next" to continue
+
+Step 2: License & GDPR Agreement
+├─ GDPR Compliance Notice (required read)
+├─ Terms of Service (required acceptance)
+├─ Privacy Policy (collapsible)
+├─ Checkbox: "I agree to GDPR Data Processing Terms"
+└─ Cannot proceed without acceptance
+
+Step 3: Data Processing Consent
+├─ Explain what data will be collected
+├─ List retention periods
+├─ Allow opt-in/opt-out for telemetry
+├─ Explain anonymization features
+└─ Show data deletion options
+
+Step 4: Installation Options
+├─ Installation path selection
+├─ Start menu shortcuts
+├─ Desktop shortcut (optional)
+├─ Auto-start with Windows (opt-in)
+├─ System Service installation (checkbox)
+└─ Windows Firewall configuration (automatic)
+
+Step 5: Performance Profile Selection
+├─ "Balanced" (default) - Chandrahas profile
+├─ "Aggressive" - Maximum monitoring
+├─ "Conservative" - Minimal overhead
+└─ "Custom" - Manual configuration
+
+Step 6: Theme Selection
+├─ Midnight (default)
+├─ Luminescence
+├─ AMOLED Black
+├─ Twilight
+├─ Neon Retro
+└─ Custom Theme Builder (preview included)
+
+Step 7: Timezone & Locale
+├─ Timezone selection dropdown
+├─ Language selection (English, French options)
+├─ 12/24 hour format selector
+└─ Number format preference
+
+Step 8: User Profile Setup
+├─ Create initial user profile
+├─ Enter profile name (default: "Chandrahas")
+├─ Set admin password (required)
+├─ Enable/disable specific monitoring modules
+└─ Save profile for import on other machines
+
+Step 9: System Requirements Check
+├─ Verify Windows 10/11
+├─ Check administrator rights
+├─ Verify free disk space (minimum 500MB)
+├─ Confirm .NET Framework / Windows Runtime availability
+└─ Alert if antivirus conflicts detected
+
+Step 10: Pre-Installation Summary
+├─ Review all selections
+├─ Final GDPR confirmation
+├─ Option to create restore point
+├─ "Install" button
+
+Step 11: Installation Progress
+├─ Progress bar with file counts
+├─ Sub-tasks: Registry entries, Service setup, Firewall rules
+├─ Real-time log of installation steps
+└─ Show option to "View Detailed Log"
+
+Step 12: Post-Installation
+├─ Success notification
+├─ Launch application checkbox
+├─ "Create Desktop Shortcut" option
+├─ "View Release Notes" link
+├─ Finish button
+```
+
+### NSIS Script Template
+
+```nsis
+; Privara Enterprise HIDS Installer
+; NSIS 3.x
+
+!include "MUI2.nsh"
+!include "Sections.nsh"
+!include "x64.nsh"
+
+; Define constants
+!define PRODUCT_NAME "Privara Enterprise HIDS"
+!define PRODUCT_VERSION "1.0.0"
+!define PRODUCT_PUBLISHER "Privara Security"
+!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
+
+; Basic settings
+SetCompressor lzma
+ShowInstDetails show
+ShowUninstDetails show
+
+; Default installation folder
+InstallDir "$PROGRAMFILES\Privara"
+
+; Get installation folder from registry if available
+InstallDirRegKey HKCU "Software\Privara" "InstallDir"
+
+; MUI Settings
+!insertmacro MUI_PAGE_WELCOME
+!insertmacro MUI_PAGE_LICENSE "LICENSE.txt"
+Page custom GDPRPage
+Page custom DataConsentPage
+!insertmacro MUI_PAGE_DIRECTORY
+Page custom PerformanceProfilePage
+Page custom ThemeSelectionPage
+Page custom TimezoneLocatePage
+Page custom UserProfilePage
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_PAGE_FINISH
+
+!insertmacro MUI_LANGUAGE "English"
+!insertmacro MUI_LANGUAGE "French"
+
+; Installer sections
+Section "Privara HIDS Core" SEC_CORE
+  SetOutPath "$INSTDIR"
+  File /r "dist\*.*"
+  
+  ; Create Start Menu shortcuts
+  CreateDirectory "$SMPROGRAMS\Privara"
+  CreateShortCut "$SMPROGRAMS\Privara\Privara.lnk" "$INSTDIR\Privara.exe"
+  CreateShortCut "$SMPROGRAMS\Privara\Uninstall.lnk" "$INSTDIR\uninstall.exe"
+  
+  ; Write registry keys
+  WriteRegStr HKCU "Software\Privara" "InstallDir" "$INSTDIR"
+  WriteRegStr HKCU "Software\Privara" "Version" "${PRODUCT_VERSION}"
+  WriteRegStr HKCU "Software\Privara" "InstallDate" "$%DATE%"
+  
+  ; Create uninstaller
+  WriteUninstaller "$INSTDIR\uninstall.exe"
+SectionEnd
+
+Section "Windows Service" SEC_SERVICE
+  ${If} ${RunningX64}
+    ExecWait '"$INSTDIR\PrivaraService.exe" /install'
+  ${EndIf}
+SectionEnd
+
+; GDPR custom page
+Function GDPRPage
+  !insertmacro MUI_HEADER_TEXT "GDPR Compliance" "Review our data processing practices"
+  
+  GetDlgItem $0 $HWNDPARENT 1 ; Get Next button
+  EnableWindow $0 0 ; Disable until accepted
+  
+  ; Show GDPR disclaimer and terms
+  ; User must check acceptance checkbox to proceed
+FunctionEnd
+
+; Data Consent page
+Function DataConsentPage
+  !insertmacro MUI_HEADER_TEXT "Data Processing Consent" "What data will we collect?"
+  
+  ; Display retention periods
+  ; Display what data is collected
+  ; Allow opt-in/opt-out for specific modules
+FunctionEnd
+
+; Performance Profile page
+Function PerformanceProfilePage
+  !insertmacro MUI_HEADER_TEXT "Select Performance Profile" "Choose monitoring intensity"
+  
+  ; Radio buttons for: Balanced, Aggressive, Conservative, Custom
+FunctionEnd
+
+; Theme Selection page
+Function ThemeSelectionPage
+  !insertmacro MUI_HEADER_TEXT "Select Theme" "Choose your preferred aesthetic"
+  
+  ; Radio buttons for: Midnight, Luminescence, AMOLED Black, Twilight, Neon Retro
+FunctionEnd
+
+; Timezone & Locale page
+Function TimezoneLocatePage
+  !insertmacro MUI_HEADER_TEXT "Timezone & Language" "Configure regional settings"
+  
+  ; Dropdown for timezone selection
+  ; Dropdown for language selection
+FunctionEnd
+
+; User Profile page
+Function UserProfilePage
+  !insertmacro MUI_HEADER_TEXT "Create User Profile" "Set up your security profile"
+  
+  ; Text field for profile name
+  ; Password fields for admin credentials
+  ; Checkboxes for module selection
+FunctionEnd
+
+; Uninstaller section
+Section "Uninstall"
+  ; Remove registry keys
+  DeleteRegKey HKCU "Software\Privara"
+  
+  ; Remove files
+  RMDir /r "$INSTDIR"
+  RMDir /r "$SMPROGRAMS\Privara"
+  
+  ; Remove desktop shortcut if exists
+  Delete "$DESKTOP\Privara.lnk"
+  
+  ; Stop service if running
+  ExecWait '"$INSTDIR\PrivaraService.exe" /uninstall'
+SectionEnd
+```
+
+### Code Signing for .exe
+
+```batch
+; Sign installer with EV certificate (Recommended)
+signtool sign /f "certificate.pfx" /p "password" /d "Privara Enterprise HIDS" ^
+  /du "https://privara-security.com" /t "http://timestamp.server.com" ^
+  Privara-Setup-1.0.0.exe
+
+; Verify signature
+signtool verify /v /pa Privara-Setup-1.0.0.exe
+```
+
+---
+
+## SYSTEM REQUIREMENTS FOR .EXE
+
+**Minimum Requirements:**
+- Windows 10 Build 19041 or Windows 11
+- Intel Core i3 / AMD Ryzen 3 (or equivalent)
+- 4GB RAM
+- 500MB free disk space
+- .NET Framework 4.8 or .NET 6.0 Runtime
+- Administrator privileges for installation
+
+**Recommended Requirements:**
+- Windows 11 Build 22621 or later
+- Intel Core i7 / AMD Ryzen 7
+- 8GB RAM
+- SSD with 1GB free space
+- Hyper-V capable processor (for sandboxing features)
+
+---
+
+## DISTRIBUTION & UPDATE STRATEGY
+
+### Primary Distribution
+1. GitHub Releases (open-source)
+2. Windows Store listing (verified publisher)
+3. Company website download (with code signing verification)
+
+### Automatic Updates
+- Built-in update checker (runs weekly)
+- Prompt user for critical security updates
+- Staged rollout: 10% → 50% → 100% of user base
+- Rollback mechanism if critical issues detected
+
+### Version Control
+- Version format: `MAJOR.MINOR.PATCH`
+- Changelog maintained in release notes
+- Breaking changes documented clearly
+- GDPR impact assessment for each update
+
+---
+
+## SECURITY CONSIDERATIONS FOR DISTRIBUTION
+
+1. **Code Signing**: All .exe files digitally signed with EV certificate
+2. **Hash Verification**: SHA-256 hashes provided for all releases
+3. **SBOM (Software Bill of Materials)**: Provided with each release for supply chain transparency
+4. **Vulnerability Disclosure**: Responsible disclosure policy in place
+5. **Security Audit**: Third-party security audit recommended before initial release
+
+---
+
+## LEGAL & COMPLIANCE DOCUMENTATION
+
+### Documents to Include in Package
+
+1. **PRIVACY_POLICY.md**
+   - Full GDPR-compliant privacy policy
+   - Data processing details
+   - User rights explanation
+   - Data retention schedules
+
+2. **DATA_PROCESSING_AGREEMENT.md**
+   - For B2B deployments
+   - Data controller/processor responsibilities
+   - Compliance commitments
+
+3. **GDPR_COMPLIANCE_CHECKLIST.md**
+   - Verification of all GDPR Article requirements
+   - Third-party audit results
+   - Remediation tracking
+
+4. **LICENSE.md**
+   - MIT License text
+   - Third-party license attributions
+   - Open source component listing
+
+5. **SECURITY_POLICY.md**
+   - Vulnerability disclosure process
+   - Security best practices for users
+   - Incident response procedures
+
+6. **CHANGELOG.md**
+   - Version history
+   - Feature additions
+   - Bug fixes
+   - Security updates
+
+---
+
+```
+
+---
+
+## .EXE DEPLOYMENT CHECKLIST
+
+- [ ] Code signing certificate acquired (EV recommended)
+- [ ] NSIS installer script completed
+- [ ] GDPR compliance documentation finalized
+- [ ] Privacy Policy embedded in application
+- [ ] Data consent flow implemented
+- [ ] Uninstaller properly removes all traces
+- [ ] Windows Store submission completed
+- [ ] GitHub repository set up and publicized
+- [ ] SHA-256 hashes generated for integrity verification
+- [ ] SBOM (Software Bill of Materials) created
+- [ ] Third-party security audit completed
+- [ ] Vulnerability disclosure policy established
+- [ ] Automatic update mechanism tested
+- [ ] System service installation tested on Windows 10/11
+- [ ] Admin privilege escalation tested
+- [ ] Rollback procedures documented
+
+---
+
+## FUTURE ROADMAP
+
+- Multi-language installer (French, German, Spanish, Japanese)
+- Automatic update delivery via Windows Update
+- Group Policy templates for enterprise deployment
+- Mobile companion app (cross-platform monitoring)
+- Cloud-optional backend for enterprise deployments (GDPR-compliant)
+- Machine learning model updates via secure channels
